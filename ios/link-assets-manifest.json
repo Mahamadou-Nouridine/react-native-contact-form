@@ -1,0 +1,29 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/Karla-Bold.ttf",
+      "sha1": "c245d7154645d1791c428999cabdfb4a31a30975"
+    },
+    {
+      "path": "assets/fonts/Karla-Italic-VariableFont_wght.ttf",
+      "sha1": "c5d47018345efd6ac3453521695b75fddc2e5d77"
+    },
+    {
+      "path": "assets/fonts/Karla-Regular.ttf",
+      "sha1": "ced42259c9a4635b123be76f4ba77144c1fef573"
+    },
+    {
+      "path": "assets/fonts/Karla-VariableFont_wght.ttf",
+      "sha1": "2c262ec5ffe1467a9e59686cefcc07a42862d823"
+    },
+    {
+      "path": "assets/fonts/OFL.txt",
+      "sha1": "ae03a27abf0cb47d3e3fe8bae4dfe442b13f2197"
+    },
+    {
+      "path": "assets/fonts/README.txt",
+      "sha1": "317c3316de76f302b7d5649b4b0a481c650eb2a6"
+    }
+  ]
+}
