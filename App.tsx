@@ -20,11 +20,17 @@ import {colors} from './constants/color';
 import FormAction from './components/FormAction';
 import InputElement from './components/InputElement';
 import useTextRadioElement from './components/TextRadioElement';
+import useTextCheckElement from './components/TextCheckElement';
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
   const {TextRadioElement} = useTextRadioElement({
     select: ['General Enquiry', 'Support Request'],
+  });
+
+  const {TextCheckElement} = useTextCheckElement({
+    label: 'I consent to being contacted by the team',
+    required: true,
   });
 
   return (
@@ -52,6 +58,7 @@ function App(): React.JSX.Element {
               <TextInput style={styles.textInput} numberOfLines={6} multiline />
             </FormAction>
           </View>
+          {TextCheckElement}
         </View>
       </ScrollView>
     </SafeAreaView>
