@@ -8,9 +8,11 @@
 import React from 'react';
 import {
   SafeAreaView,
+  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
+  TextInput,
   useColorScheme,
   View,
 } from 'react-native';
@@ -31,19 +33,27 @@ function App(): React.JSX.Element {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         // backgroundColor={backgroundStyle.backgroundColor}
       />
-      <View style={styles.formContainer}>
-        <Text style={styles.title}>Contact Us</Text>
-        <View style={styles.formActionsContainer}>
-          {/* Text Inputs */}
-          <InputElement label="First Name" required />
-          <InputElement label="Last Name" required />
-          <InputElement label="Email Address" required />
+      <ScrollView>
+        <View style={styles.formContainer}>
+          <Text style={styles.title}>Contact Us</Text>
+          <View style={styles.formActionsContainer}>
+            {/* Text Inputs */}
+            <InputElement label="First Name" required />
+            <InputElement label="Last Name" required />
+            <InputElement label="Email Address" required />
 
-          {/* Radio Inputs */}
-          <FormAction label="Query Type" required />
-          {TextRadioElement}
+            {/* Radio Inputs */}
+            <FormAction label="Query Type" required>
+              {TextRadioElement}
+            </FormAction>
+
+            {/* Text Area Inputs */}
+            <FormAction label="Message" required>
+              <TextInput style={styles.textInput} numberOfLines={6} multiline />
+            </FormAction>
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -52,10 +62,10 @@ const styles = StyleSheet.create({
   mainContainer: {
     backgroundColor: colors.primary.green200,
     height: '100%',
-    padding: 20,
     justifyContent: 'center',
   },
   formContainer: {
+    margin: 20,
     backgroundColor: colors.neutral.white,
     padding: 10,
     borderRadius: 10,
@@ -69,6 +79,15 @@ const styles = StyleSheet.create({
     color: colors.neutral.grey900,
     fontFamily: 'Karla-Bold',
     fontSize: 30,
+  },
+  textInput: {
+    borderColor: colors.neutral.grey900,
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderRadius: 10,
+    fontSize: 20,
+    fontFamily: 'Karla-Regular',
+    textAlignVertical: 'top',
   },
 });
 
