@@ -1,25 +1,40 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {colors} from '../constants/color';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 interface props {
   select: string[];
+  selected: number | null;
+  selectGenerator: (index: number) => () => void;
 }
 
-const TextRadioElement: React.FC<props> = () => {
+const TextRadioElement: React.FC<props> = ({
+  selected,
+  select,
+  selectGenerator,
+}) => {
   return (
     <View style={styles.radioContainer}>
-      <RadioElement selected label="nothing" />
-      <RadioElement label="something" />
+      {select.map((el, index) => (
+        <RadioElement
+          onSelect={selectGenerator(index)}
+          key={index}
+          selected={selected === index}
+          label={el}
+        />
+      ))}
     </View>
   );
 };
 
-const useTextRadioElement = (props: props) => {
-  const [selected, setSelected] = useState(null);
+const useTextRadioElement = (props: Pick<props, 'select'>) => {
+  const [selected, setSelected] = useState<null | number>(null);
+  const selectGenerator = (index: number) => {
+    return () => setSelected(index);
+  };
   return {
-    TextRadioElement: TextRadioElement({...props}),
+    TextRadioElement: TextRadioElement({...props, selected, selectGenerator}),
     selected: selected,
     setSelected,
   };
@@ -30,18 +45,23 @@ export default useTextRadioElement;
 interface RadioElementProps {
   selected?: boolean;
   label: string;
+  onSelect: () => void;
 }
 
-const RadioElement: React.FC<RadioElementProps> = ({selected, label}) => {
+const RadioElement: React.FC<RadioElementProps> = ({
+  selected,
+  label,
+  onSelect,
+}) => {
   return (
-    <View style={styles.input}>
+    <Pressable onPress={onSelect} style={styles.input}>
       <Icon
         name={`radio-button-${selected ? 'on' : 'off'}`}
         size={25}
         color={colors.neutral.grey500}
       />
       <Text style={styles.inputText}>{label}</Text>
-    </View>
+    </Pressable>
   );
 };
 
