@@ -26,8 +26,8 @@ const FormAction: React.FC<FormaActionProps> = ({
 const styles = StyleSheet.create({
   textInputLabel: {
     fontSize: 20,
-    color: colors.neutral.grey900,
-    fontFamily: 'Karla-Regular',
+    color: colors.neutral.grey500,
+    fontFamily: 'Karla-Bold',
   },
   requiredStar: {
     color: colors.neutral.grey500,

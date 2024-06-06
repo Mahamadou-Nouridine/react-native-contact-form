@@ -17,9 +17,13 @@ import {
 import {colors} from './constants/color';
 import FormAction from './components/FormAction';
 import InputElement from './components/InputElement';
+import useTextRadioElement from './components/TextRadioElement';
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
+  const {TextRadioElement} = useTextRadioElement({
+    select: ['General Enquiry', 'Support Request'],
+  });
 
   return (
     <SafeAreaView style={styles.mainContainer}>
@@ -37,6 +41,7 @@ function App(): React.JSX.Element {
 
           {/* Radio Inputs */}
           <FormAction label="Query Type" required />
+          {TextRadioElement}
         </View>
       </View>
     </SafeAreaView>
@@ -48,6 +53,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary.green200,
     height: '100%',
     padding: 20,
+    justifyContent: 'center',
   },
   formContainer: {
     backgroundColor: colors.neutral.white,
