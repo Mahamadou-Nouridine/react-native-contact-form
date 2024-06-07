@@ -200,7 +200,7 @@ function App(): React.JSX.Element {
                 onChangeText={text => {
                   handleChange('message', text);
                 }}
-                style={styles.textInput}
+                style={{...textInputStyle(errors.message).textInput}}
                 numberOfLines={6}
                 multiline
               />
@@ -215,6 +215,19 @@ function App(): React.JSX.Element {
     </SafeAreaView>
   );
 }
+
+const textInputStyle = (err: boolean) =>
+  StyleSheet.create({
+    textInput: {
+      borderColor: err ? colors.primary.red : colors.neutral.grey900,
+      borderWidth: 1,
+      borderStyle: 'solid',
+      borderRadius: 10,
+      fontSize: 20,
+      fontFamily: 'Karla-Regular',
+      textAlignVertical: 'top',
+    },
+  });
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -237,15 +250,6 @@ const styles = StyleSheet.create({
     color: colors.neutral.grey900,
     fontFamily: 'Karla-Bold',
     fontSize: 30,
-  },
-  textInput: {
-    borderColor: colors.neutral.grey900,
-    borderWidth: 1,
-    borderStyle: 'solid',
-    borderRadius: 10,
-    fontSize: 20,
-    fontFamily: 'Karla-Regular',
-    textAlignVertical: 'top',
   },
   submitBtn: {
     backgroundColor: colors.primary.green600,
