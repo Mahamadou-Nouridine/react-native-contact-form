@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -5,7 +6,7 @@
  * @format
  */
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Pressable,
   SafeAreaView,
@@ -25,14 +26,129 @@ import useTextCheckElement from './components/TextCheckElement';
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
-  const {TextRadioElement} = useTextRadioElement({
+  const [formData, setFormData] = useState({
+    firstname: '',
+    lastname: '',
+    email: '',
+    queryType: null as null | number,
+    message: '',
+    accept: false,
+  });
+
+  const [errors, setErros] = useState({
+    firstname: false,
+    lastname: false,
+    email: {model: false, exist: false},
+    queryType: false,
+    message: false,
+    accept: false,
+  });
+
+  const {TextRadioElement, selected, setSelected} = useTextRadioElement({
     select: ['General Enquiry', 'Support Request'],
   });
 
-  const {TextCheckElement} = useTextCheckElement({
+  const {TextCheckElement, checked, setChecked} = useTextCheckElement({
     label: 'I consent to being contacted by the team',
     required: true,
   });
+
+  useEffect(() => {
+    setChecked(formData.accept);
+    setSelected(formData.queryType);
+  }, [setChecked, setSelected]);
+
+  useEffect(() => {
+    setFormData(data => ({...data, queryType: selected, accept: checked}));
+  }, [selected, checked]);
+
+  // handle change
+  const handleChange = (
+    key: 'firstname' | 'lastname' | 'email' | 'message',
+    value: string,
+  ) => {
+    setFormData({...formData, [key]: value});
+  };
+
+  //Validate Email
+  const validateEmail = () => {
+    if (
+      !/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(formData.email)
+    ) {
+      setErros(err => {
+        err.email = {...err.email, model: true};
+        return err;
+      });
+    } else {
+      setErros(err => {
+        err.email = {...err.email, model: false};
+        return err;
+      });
+    }
+    if (!formData.email) {
+      setErros(err => {
+        err.email = {...err.email, exist: true};
+        return err;
+      });
+    } else {
+      setErros(err => {
+        err.email = {...err.email, exist: false};
+        return err;
+      });
+    }
+  };
+
+  //Validate Input
+  const validateInput = (
+    input: 'firstname' | 'lastname' | 'message' | 'accept',
+  ) => {
+    if (!formData[input]) {
+      setErros(err => {
+        err[input] = true;
+        return err;
+      });
+    } else {
+      setErros(err => {
+        err[input] = false;
+        return err;
+      });
+    }
+  };
+
+  //Validate Query Type
+  const validateQueryType = () => {
+    if (formData.queryType == null) {
+      setErros({...errors, queryType: true});
+    } else {
+      setErros({...errors, queryType: false});
+    }
+  };
+
+  //Handle submit
+  const handleSubmit = () => {
+    for (let key of Object.keys(errors)) {
+      const prop = key as
+        | 'firstname'
+        | 'lastname'
+        | 'email'
+        | 'message'
+        | 'accept'
+        | 'queryType';
+      if (!['email', 'queryType'].includes(prop)) {
+        validateInput(prop as 'firstname' | 'lastname' | 'message' | 'accept');
+      }
+      if (prop === 'email') {
+        validateEmail();
+      }
+      if (prop === 'queryType') {
+        validateQueryType();
+      }
+    }
+  };
+
+  useEffect(() => {
+    console.log({errors});
+  }, [errors]);
 
   return (
     <SafeAreaView style={styles.mainContainer}>
@@ -45,9 +161,33 @@ function App(): React.JSX.Element {
           <Text style={styles.title}>Contact Us</Text>
           <View style={styles.formActionsContainer}>
             {/* Text Inputs */}
-            <InputElement label="First Name" required />
-            <InputElement label="Last Name" required />
-            <InputElement label="Email Address" required />
+            <InputElement
+              validationError={errors.firstname}
+              onChangeText={text => {
+                handleChange('firstname', text);
+              }}
+              value={formData.firstname}
+              label="First Name"
+              required
+            />
+            <InputElement
+              validationError={errors.lastname}
+              onChangeText={text => {
+                handleChange('lastname', text);
+              }}
+              value={formData.lastname}
+              label="Last Name"
+              required
+            />
+            <InputElement
+              validationError={errors.email.exist || errors.email.model}
+              onChangeText={text => {
+                handleChange('email', text);
+              }}
+              value={formData.email}
+              label="Email Address"
+              required
+            />
 
             {/* Radio Inputs */}
             <FormAction label="Query Type" required>
@@ -56,11 +196,18 @@ function App(): React.JSX.Element {
 
             {/* Text Area Inputs */}
             <FormAction label="Message" required>
-              <TextInput style={styles.textInput} numberOfLines={6} multiline />
+              <TextInput
+                onChangeText={text => {
+                  handleChange('message', text);
+                }}
+                style={styles.textInput}
+                numberOfLines={6}
+                multiline
+              />
             </FormAction>
           </View>
           {TextCheckElement}
-          <Pressable style={styles.submitBtn}>
+          <Pressable onPress={handleSubmit} style={styles.submitBtn}>
             <Text style={styles.submitText}>Submit</Text>
           </Pressable>
         </View>
