@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: 'Karla-Regular',
     color: colors.neutral.grey900,
+    flexShrink: 1,
   },
   radioContainer: {
     gap: 15,

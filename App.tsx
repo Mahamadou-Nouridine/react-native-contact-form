@@ -39,7 +39,7 @@ function App(): React.JSX.Element {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         // backgroundColor={backgroundStyle.backgroundColor}
       />
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps="always">
         <View style={styles.formContainer}>
           <Text style={styles.title}>Contact Us</Text>
           <View style={styles.formActionsContainer}>
