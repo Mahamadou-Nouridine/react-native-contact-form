@@ -180,7 +180,8 @@ function App(): React.JSX.Element {
               required
             />
             <InputElement
-              validationError={errors.email.exist || errors.email.model}
+              validationError={errors.email.exist}
+              emailPatern={errors.email.model}
               onChangeText={text => {
                 handleChange('email', text);
               }}
@@ -192,6 +193,11 @@ function App(): React.JSX.Element {
             {/* Radio Inputs */}
             <FormAction label="Query Type" required>
               {TextRadioElement}
+              {errors.queryType && (
+                <Text style={{color: colors.primary.red}}>
+                  Please select a query type
+                </Text>
+              )}
             </FormAction>
 
             {/* Text Area Inputs */}
@@ -204,9 +210,22 @@ function App(): React.JSX.Element {
                 numberOfLines={6}
                 multiline
               />
+              {errors.message && (
+                <Text style={{color: colors.primary.red}}>
+                  This field is required
+                </Text>
+              )}
             </FormAction>
           </View>
-          {TextCheckElement}
+          <View>
+            {TextCheckElement}
+            {errors.accept && (
+              <Text style={{color: colors.primary.red}}>
+                To submit this form, please consent to being contacted
+              </Text>
+            )}
+          </View>
+
           <Pressable onPress={handleSubmit} style={styles.submitBtn}>
             <Text style={styles.submitText}>Submit</Text>
           </Pressable>

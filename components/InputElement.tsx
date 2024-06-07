@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, TextInput, TextInputProps} from 'react-native';
+import {StyleSheet, Text, TextInput, TextInputProps} from 'react-native';
 import FormAction from './FormAction';
 import {colors} from '../constants/color';
 
@@ -7,16 +7,30 @@ interface InputProps {
   label: string;
   required?: boolean;
   validationError?: boolean;
+  emailPatern?: boolean;
 }
 const InputElement: React.FC<InputProps & TextInputProps> = ({
   label,
   required,
   validationError,
+  emailPatern,
   ...rest
 }) => {
   return (
     <FormAction label={label} required={required}>
-      <TextInput {...rest} style={styles(!!validationError).textInput} />
+      <TextInput
+        {...rest}
+        style={styles(!!validationError || !!emailPatern).textInput}
+      />
+      {(validationError && emailPatern) || validationError ? (
+        <Text style={{color: colors.primary.red}}>This field is required</Text>
+      ) : emailPatern ? (
+        <Text style={{color: colors.primary.red}}>
+          Please enter a valid email address
+        </Text>
+      ) : (
+        ''
+      )}
     </FormAction>
   );
 };
