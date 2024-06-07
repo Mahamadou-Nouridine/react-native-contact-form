@@ -7,6 +7,7 @@
 
 import React from 'react';
 import {
+  Pressable,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -59,6 +60,9 @@ function App(): React.JSX.Element {
             </FormAction>
           </View>
           {TextCheckElement}
+          <Pressable style={styles.submitBtn}>
+            <Text style={styles.submitText}>Submit</Text>
+          </Pressable>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -95,6 +99,17 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: 'Karla-Regular',
     textAlignVertical: 'top',
+  },
+  submitBtn: {
+    backgroundColor: colors.primary.green600,
+    padding: 25,
+    borderRadius: 10,
+  },
+  submitText: {
+    color: colors.neutral.white,
+    fontSize: 20,
+    fontFamily: 'Karla-Bold',
+    textAlign: 'center',
   },
 });
 
