@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, Text, TextInput, TextInputProps} from 'react-native';
 import FormAction from './FormAction';
 import {colors} from '../constants/color';
@@ -16,11 +16,17 @@ const InputElement: React.FC<InputProps & TextInputProps> = ({
   emailPatern,
   ...rest
 }) => {
+  const [focus, setFocus] = useState(false);
+
   return (
     <FormAction label={label} required={required}>
       <TextInput
         {...rest}
-        style={styles(!!validationError || !!emailPatern).textInput}
+        onFocus={() => {
+          setFocus(true);
+        }}
+        onBlur={() => setFocus(false)}
+        style={styles(!!validationError || !!emailPatern, focus).textInput}
       />
       {(validationError && emailPatern) || validationError ? (
         <Text style={{color: colors.primary.red}}>This field is required</Text>
@@ -35,10 +41,14 @@ const InputElement: React.FC<InputProps & TextInputProps> = ({
   );
 };
 
-const styles = (err: boolean) =>
+const styles = (err: boolean, focus?: boolean) =>
   StyleSheet.create({
     textInput: {
-      borderColor: err ? colors.primary.red : colors.neutral.grey900,
+      borderColor: focus
+        ? colors.primary.green600
+        : err
+        ? colors.primary.red
+        : colors.neutral.grey900,
       borderWidth: 1,
       borderStyle: 'solid',
       borderRadius: 10,
