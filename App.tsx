@@ -27,14 +27,15 @@ import useSuccessModal from './components/SuccessModal';
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
-  const [formData, setFormData] = useState({
+  const initialState = {
     firstname: '',
     lastname: '',
     email: '',
     queryType: null as null | number,
     message: '',
     accept: false,
-  });
+  };
+  const [formData, setFormData] = useState(initialState);
 
   const [errors, setErros] = useState({
     firstname: false,
@@ -166,12 +167,22 @@ function App(): React.JSX.Element {
 
   const {ModalComponent, popup} = useSuccessModal();
 
+  const resetInputs = () => {
+    setFormData(initialState);
+    setChecked(false);
+    setSelected(null);
+  };
+
   //Handle submit
   const handleSubmit = () => {
     runAllValidation();
     const erroState = getErrorState();
     if (!erroState) {
       popup();
+      const t = setTimeout(() => {
+        resetInputs();
+        clearTimeout(t);
+      }, 1000);
     }
   };
 
@@ -209,7 +220,6 @@ function App(): React.JSX.Element {
               validationError={errors.email.exist}
               emailPatern={errors.email.model}
               onChangeText={text => {
-                validateEmail();
                 handleChange('email', text);
               }}
               value={formData.email}
@@ -233,6 +243,7 @@ function App(): React.JSX.Element {
                 onChangeText={text => {
                   handleChange('message', text);
                 }}
+                value={formData.message}
                 style={{...textInputStyle(errors.message).textInput}}
                 numberOfLines={6}
                 multiline

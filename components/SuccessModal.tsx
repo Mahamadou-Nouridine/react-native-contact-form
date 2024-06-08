@@ -19,7 +19,15 @@ const useSuccessModal = () => {
         useNativeDriver: true,
       }).start();
       clearTimeout(t);
-    }, 1000);
+    }, 3000);
+  };
+
+  const closePopup = () => {
+    Animated.timing(position, {
+      toValue: -110,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
   };
 
   return {
@@ -28,6 +36,12 @@ const useSuccessModal = () => {
       <View style={styles.modalContainer}>
         <Animated.View
           style={{...styles.modal, transform: [{translateY: position}]}}>
+          <Icon
+            style={styles.closeIcon}
+            color={colors.primary.red}
+            name="close-circle-outline"
+            onPress={() => closePopup()}
+          />
           <View style={styles.modalTitle}>
             <Icon
               style={styles.icon}
@@ -68,6 +82,7 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15,
+    position: 'relative',
   },
   modalText: {
     color: colors.neutral.white,
@@ -88,5 +103,13 @@ const styles = StyleSheet.create({
     color: colors.neutral.white,
     fontSize: 15,
     fontFamily: 'Karla-Bold',
+  },
+  closeIcon: {
+    fontSize: 25,
+    fontFamily: 'Karla-Bold',
+    fontWeight: 900,
+    position: 'absolute',
+    right: 10,
+    top: 10,
   },
 });
