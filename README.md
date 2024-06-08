@@ -1,8 +1,37 @@
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
+# 📖 About The Application <a name="about-project"></a>
+
+
+**Contact Form** is a Front-end-only mobile application for making a contact request. It is built with React Native and the main purpose is for me to train myself on the technology.
+
+![Simple-image](./assets/images/simple.png)
+![Active-image](./assets/images/active.png)
+![Error-image](./assets/images/error.png)
+![Success-image](./assets/images/success.png)
+
+## 🛠 Built With <a name="built-with"></a>
+
+  <ul>
+    <li>React Native</li>
+    <li>Javascript</li>
+  </ul>
+
+<!-- Features -->
+
+### Key Features <a name="key-features"></a>
+
+- [x] **Submit Contact Request**
+- [x] **Front-end validation**
+- [x] **Colorful alerts**
+- [x] **Success modal**
+- [x] **Form auto-reseting**
+
+**Note**: No external library have been used, again the reason is just to get familliar enough with the technology.
+
 # Getting Started
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+> **Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
 
 ## Step 1: Start the Metro Server
 
