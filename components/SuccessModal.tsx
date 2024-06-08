@@ -1,29 +1,51 @@
-import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React, {useRef} from 'react';
+import {Animated, StyleSheet, Text, View} from 'react-native';
 import {colors} from '../constants/color';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const SuccessModal = () => {
-  return (
-    <View style={styles.modalContainer}>
-      <View style={styles.modal}>
-        <View style={styles.modalTitle}>
-          <Icon
-            style={styles.icon}
-            color={colors.neutral.white}
-            name="checkmark-circle-outline"
-          />
-          <Text style={styles.modalText}>Message Sent!</Text>
-        </View>
-        <Text style={styles.modalDescriptionText}>
-          Thanks for completing the form. We'll be in touch soon!
-        </Text>
+const useSuccessModal = () => {
+  const position = useRef(new Animated.Value(-110)).current;
+
+  const popup = () => {
+    Animated.timing(position, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+    const t = setTimeout(() => {
+      Animated.timing(position, {
+        toValue: -110,
+        duration: 200,
+        useNativeDriver: true,
+      }).start();
+      clearTimeout(t);
+    }, 1000);
+  };
+
+  return {
+    popup,
+    ModalComponent: (
+      <View style={styles.modalContainer}>
+        <Animated.View
+          style={{...styles.modal, transform: [{translateY: position}]}}>
+          <View style={styles.modalTitle}>
+            <Icon
+              style={styles.icon}
+              color={colors.neutral.white}
+              name="checkmark-circle-outline"
+            />
+            <Text style={styles.modalText}>Message Sent!</Text>
+          </View>
+          <Text style={styles.modalDescriptionText}>
+            Thanks for completing the form. We'll be in touch soon!
+          </Text>
+        </Animated.View>
       </View>
-    </View>
-  );
+    ),
+  };
 };
 
-export default SuccessModal;
+export default useSuccessModal;
 
 const styles = StyleSheet.create({
   modalContainer: {

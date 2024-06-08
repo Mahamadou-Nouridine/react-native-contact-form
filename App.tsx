@@ -23,7 +23,7 @@ import FormAction from './components/FormAction';
 import InputElement from './components/InputElement';
 import useTextRadioElement from './components/TextRadioElement';
 import useTextCheckElement from './components/TextCheckElement';
-import SuccessModal from './components/SuccessModal';
+import useSuccessModal from './components/SuccessModal';
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -125,6 +125,12 @@ function App(): React.JSX.Element {
     }
   };
 
+  useEffect(() => {
+    console.log({errors});
+  }, [errors]);
+
+  const {ModalComponent, popup} = useSuccessModal();
+
   //Handle submit
   const handleSubmit = () => {
     for (let key of Object.keys(errors)) {
@@ -145,11 +151,8 @@ function App(): React.JSX.Element {
         validateQueryType();
       }
     }
+    popup();
   };
-
-  useEffect(() => {
-    console.log({errors});
-  }, [errors]);
 
   return (
     <SafeAreaView style={styles.mainContainer}>
@@ -157,7 +160,7 @@ function App(): React.JSX.Element {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         // backgroundColor={backgroundStyle.backgroundColor}
       />
-      <SuccessModal />
+      {ModalComponent}
       <ScrollView keyboardShouldPersistTaps="always">
         <View style={styles.formContainer}>
           <Text style={styles.title}>Contact Us</Text>
