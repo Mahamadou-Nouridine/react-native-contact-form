@@ -125,14 +125,16 @@ function App(): React.JSX.Element {
     }
   };
 
-  useEffect(() => {
-    console.log({errors});
-  }, [errors]);
+  const runAllValidation = () => {
+    validateEmail();
+    ['firstname', 'lastname', 'message', 'accept'].forEach(e => {
+      validateInput(e as 'firstname' | 'lastname' | 'message' | 'accept');
+    });
+    validateQueryType();
+  };
 
-  const {ModalComponent, popup} = useSuccessModal();
-
-  //Handle submit
-  const handleSubmit = () => {
+  const getErrorState = () => {
+    let errorState = false;
     for (let key of Object.keys(errors)) {
       const prop = key as
         | 'firstname'
@@ -141,17 +143,36 @@ function App(): React.JSX.Element {
         | 'message'
         | 'accept'
         | 'queryType';
-      if (!['email', 'queryType'].includes(prop)) {
-        validateInput(prop as 'firstname' | 'lastname' | 'message' | 'accept');
+      if (!['email'].includes(prop)) {
+        if (errors[prop]) {
+          errorState = true;
+        }
       }
       if (prop === 'email') {
-        validateEmail();
-      }
-      if (prop === 'queryType') {
-        validateQueryType();
+        if (errors.email.exist || errors.email.model) {
+          errorState = true;
+        }
       }
     }
-    popup();
+    return errorState;
+  };
+
+  useEffect(() => {
+    console.log({errors});
+  }, [errors]);
+  // useEffect(() => {
+  //   validateInput('firstname');
+  // }, [formData]);
+
+  const {ModalComponent, popup} = useSuccessModal();
+
+  //Handle submit
+  const handleSubmit = () => {
+    runAllValidation();
+    const erroState = getErrorState();
+    if (!erroState) {
+      popup();
+    }
   };
 
   return (
