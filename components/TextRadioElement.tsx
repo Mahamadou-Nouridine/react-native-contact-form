@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {colors} from '../constants/color';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -54,7 +54,7 @@ const RadioElement: React.FC<RadioElementProps> = ({
   onSelect,
 }) => {
   return (
-    <Pressable onPress={onSelect} style={styles.input}>
+    <Pressable onPress={onSelect} style={inputStyle(selected).input}>
       <Icon
         name={`radio-button-${selected ? 'on' : 'off'}`}
         size={25}
@@ -65,17 +65,24 @@ const RadioElement: React.FC<RadioElementProps> = ({
   );
 };
 
+const inputStyle = (selected?: boolean) =>
+  StyleSheet.create({
+    input: {
+      // borderBlockColor: colors.neutral.grey900,
+      borderWidth: 1,
+      padding: 13,
+      borderRadius: 10,
+      borderColor: selected ? colors.primary.green600 : colors.neutral.grey900,
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 10,
+      backgroundColor: selected
+        ? colors.primary.green200
+        : colors.neutral.white,
+    },
+  });
+
 const styles = StyleSheet.create({
-  input: {
-    borderBlockColor: colors.neutral.grey900,
-    borderWidth: 1,
-    padding: 13,
-    borderRadius: 10,
-    borderColor: colors.neutral.grey900,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-  },
   inputText: {
     fontSize: 20,
     fontFamily: 'Karla-Bold',
